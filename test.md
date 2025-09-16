@@ -19,7 +19,7 @@
 
 ## 图片示例
 
-![示例图片](https://via.placeholder.com/150)
+![示例图片](https://avatars.githubusercontent.com/u/232315616?v=4&size=40)
 
 ## 代码块示例
 

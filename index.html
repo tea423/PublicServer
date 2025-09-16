@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markdown 渲染示例</title>
-  <!-- 引入 marked.js -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
-    #preview {
-      border: 1px solid #ccc;
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      line-height: 1.6;
+      padding: 0 20px;
+      background-color: #f5f5f5;
+    }
+    pre {
+      background: #eee;
       padding: 10px;
-      margin-top: 20px;
-      background: #f9f9f9;
+      overflow-x: auto;
     }
   </style>
 </head>
 <body>
+  <h1>Markdown 渲染示例</h1>
+  <div id="content">加载中...</div>
 
-  <h2>输入 Markdown：</h2>
-  <textarea id="markdown-input" rows="10" cols="60"># 你好，Markdown！
-
-这是一个 **粗体** 的示例。
-
-- 列表项 1
-- 列表项 2
-
-[访问 GitHub](https://github.com)
-    </textarea>
-
-  <h2>渲染结果：</h2>
-  <div id="preview"></div>
-
+  <!-- 引入 marked.js 渲染 Markdown -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
-    // 获取输入的 markdown 文本
-    const input = document.getElementById('markdown-input').value;
+    const mdUrl = 'https://raw.githubusercontent.com/tea423/PublicServer/refs/heads/main/test.md'; // 你的 Markdown 文件 URL
 
-    // 配置 marked（可选）
-    marked.setOptions({
-      breaks: true,    // 支持换行符转 <br>
-      gfm: true        // 启用 GitHub Flavored Markdown
-    });
+    async function fetchAndRenderMD() {
+      try {
+        const response = await fetch(mdUrl);
+        if (!response.ok) throw new Error('网络错误: ' + response.status);
+        const markdownText = await response.text(); // 获取纯文本
 
-    // 将 markdown 转为 html
-    const html = marked.parse(input);
+        const html = marked.parse(markdownText); // 转成 HTML
+        document.getElementById('content').innerHTML = html;
+      } catch (err) {
+        document.getElementById('content').innerText = '加载失败: ' + err;
+        console.error(err);
+      }
+    }
 
-    // 将 html 插入到预览区域
-    document.getElementById('preview').innerHTML = html;
+    fetchAndRenderMD();
   </script>
-
 </body>
+</html>
